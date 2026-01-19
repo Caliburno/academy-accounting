@@ -1,29 +1,40 @@
 package io.github.caliburno.academy_accounting.model;
 
 import io.github.caliburno.academy_accounting.model.enums.CourseLevel;
-import lombok.Getter;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "courses")
 public class Course {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private CourseLevel level;
-    private float price;
 
-    public Course(int id, CourseLevel level, AcademicYear year, float price) {
-        this.id = id;
-        this.level = level;
-        this.price = price;
-    }
+    @Column(nullable = false)
+    private BigDecimal basePrice;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "academic_year_id", nullable = false)
+    private AcademicYear academicYearList;
 
-    public void setLevel(CourseLevel level) {
-        this.level = level;
-    }
+    @OneToMany(mappedBy = "course")
+    private List<Enrollment> enrollmentList;
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
 }

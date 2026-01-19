@@ -1,33 +1,41 @@
 package io.github.caliburno.academy_accounting.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "students")
 public class Student {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
+
+    @Column
     private String email;
-    private int phone;
+
+    @Column
+    private String phone;
+
+    @Column
     private String referentAdult;
 
+    @Column
     private LocalDate dateOfBirth;
 
     @ManyToOne
     @JoinColumn(name = "family_group_id")
     private FamilyGroup familyGroup;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Enrollment> enrollmentList;
 }
