@@ -1,4 +1,4 @@
 package io.github.caliburno.academy_accounting.controller.api;
 
-public class ResportRestController {
+public class ReportRestController {
 }

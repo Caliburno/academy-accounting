@@ -1,4 +1,4 @@
 package io.github.caliburno.academy_accounting.dto;
 
-public class CouseDTO {
+public class CourseDTO {
 }
