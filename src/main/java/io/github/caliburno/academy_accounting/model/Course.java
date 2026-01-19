@@ -32,9 +32,9 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "academic_year_id", nullable = false)
-    private AcademicYear academicYearList;
+    private AcademicYear academicYear;
 
     @OneToMany(mappedBy = "course")
-    private List<Enrollment> enrollmentList;
+    private List<Enrollment> enrollment;
 
 }

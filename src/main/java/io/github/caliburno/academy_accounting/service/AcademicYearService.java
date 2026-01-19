@@ -39,4 +39,27 @@ public class AcademicYearService {
         return academicYearRepository.save(academicYear);
     }
 
+    public AcademicYear activateYear(Long id) {
+        AcademicYear year = findById(id).orElseThrow(() -> new RuntimeException("Año académico no encontrado"));
+
+        academicYearRepository.findByActiveTrue().ifPresent(current -> {
+            current.setActive(false);
+            academicYearRepository.save(current);
+        });
+
+        year.setActive(true);
+        return academicYearRepository.save(year);
+    }
+
+    public void deleteById(Long id) {
+        AcademicYear year = findById(id).orElseThrow(() -> new RuntimeException("Año académico no encontrado"));
+
+        if (year.getActive()) {
+            throw new RuntimeException("No se puede eliminar el año activo");
+        }
+
+        academicYearRepository.deleteById(id);
+
+    }
+
 }
