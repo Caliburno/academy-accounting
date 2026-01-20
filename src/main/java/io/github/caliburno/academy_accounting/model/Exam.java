@@ -36,7 +36,7 @@ public class Exam {
 
     @ManyToOne
     @JoinColumn(name = "academic_year_id", nullable = false)
-    private AcademicYear year;
+    private AcademicYear academicYear;
 
     @OneToMany(mappedBy = "exam")
     private List<ExamRegistration> registrationList;

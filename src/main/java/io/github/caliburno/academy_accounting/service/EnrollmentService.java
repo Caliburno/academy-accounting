@@ -1,12 +1,16 @@
 package io.github.caliburno.academy_accounting.service;
 
-import io.github.caliburno.academy_accounting.model.FamilyGroup;
-import io.github.caliburno.academy_accounting.model.Student;
-import io.github.caliburno.academy_accounting.repository.StudentRepository;
+import io.github.caliburno.academy_accounting.model.*;
+import io.github.caliburno.academy_accounting.model.enums.PaymentStatus;
+import io.github.caliburno.academy_accounting.repository.EnrollmentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,34 +19,103 @@ import java.util.Optional;
 public class EnrollmentService {
 
     @Autowired
-    private StudentRepository studentRepository;
+    private EnrollmentRepository enrollmentRepository;
 
-    public List<Student> findAll() {
-        return studentRepository.findAll();
+    @Autowired
+    private AcademicYearService academicYearService;
+
+    private static final int START_MONTH = 3;
+    private static final int END_MONTH = 12;
+
+    public List<Enrollment> findAll() {
+        return enrollmentRepository.findAll();
     }
 
-    public Optional<Student> findById(Long id) {
-        return studentRepository.findById(id);
+    public Optional<Enrollment> findById(Long id) {
+        return enrollmentRepository.findById(id);
     }
 
-    public List<Student> searchByName(String name) {
-        return studentRepository.findByNameContainingIgnoreCase(name);
+    public List<Enrollment> findByStudent(Student student) {
+        return enrollmentRepository.findByStudent(student);
     }
 
-    public List<Student> findByFamilyGroup(FamilyGroup familyGroup) {
-        return studentRepository.findByFamilyGroup(familyGroup);
+    public List<Enrollment> findByCourse(Course course) {
+        return enrollmentRepository.findByCourse(course);
     }
 
-    public Student save(Student student) {
-        return studentRepository.save(student);
+    public List<Enrollment> findActiveEnrollments() {
+        return enrollmentRepository.findByAcademicYear_ActiveTrue();
+    }
+
+    public Enrollment createEnrollment(Student student, Course course, AcademicYear academicYear) {
+
+        BigDecimal finalPrice = calculateFinalPrice(student, course);
+
+        Enrollment enrollment = Enrollment.builder()
+                .student(student)
+                .course(course)
+                .academicYear(academicYear)
+                .finalPrice(finalPrice)
+                .enrollmentDate(LocalDate.now())
+                .build();
+
+        enrollment = enrollmentRepository.save(enrollment);
+
+        List<MonthlyPayment> monthlyPayments = generateMontlyPayments(enrollment);
+        enrollment.setMonthlyPayments(monthlyPayments);
+
+        return enrollmentRepository.save(enrollment);
+    }
+
+    private BigDecimal calculateFinalPrice(Student student, Course course) {
+        BigDecimal basePrice = course.getBasePrice();
+
+        if(student.getFamilyGroup() != null) {
+            FamilyGroup family = student.getFamilyGroup();
+
+            if(family.getStudents() != null && family.getStudents().size() >= 2) {
+                BigDecimal discount = family.getDiscountPercentage();
+                BigDecimal discountAmount = basePrice
+                        .multiply(discount)
+                        .divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
+
+                return basePrice.subtract(discountAmount);
+            }
+        }
+
+        return basePrice;
+    }
+
+    private List<MonthlyPayment> generateMontlyPayments(Enrollment enrollment) {
+        List<MonthlyPayment> payments = new ArrayList<>();
+        int numberOfMonths = END_MONTH - START_MONTH + 1;
+
+        BigDecimal monthlyAmount = enrollment
+                .getFinalPrice().divide(new BigDecimal(numberOfMonths), 2, RoundingMode.HALF_UP);
+
+        int year = enrollment.getAcademicYear().getYear();
+
+        for (int month = START_MONTH; month <= END_MONTH; month++) {
+            MonthlyPayment payment = MonthlyPayment.builder()
+                    .enrollment(enrollment)
+                    .year(year)
+                    .month(month)
+                    .amount(monthlyAmount)
+                    .status(PaymentStatus.PENDING)
+                    .build();
+
+            payments.add(payment);
+        }
+
+        return payments;
+    }
+
+    public Enrollment save(Enrollment enrollment) {
+        return enrollmentRepository.save(enrollment);
     }
 
     public void deleteById(Long id) {
-        Student student = findById(id).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
-        if (student.getEnrollmentList() != null && !student.getEnrollmentList().isEmpty()) {
-            throw new RuntimeException("No se puede eliminar un alumno con inscripciones activas");
-        }
-        studentRepository.deleteById(id);
+        enrollmentRepository.deleteById(id);
     }
 
 }
