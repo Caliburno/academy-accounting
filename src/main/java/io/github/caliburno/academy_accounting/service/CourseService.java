@@ -3,7 +3,6 @@ package io.github.caliburno.academy_accounting.service;
 import io.github.caliburno.academy_accounting.model.AcademicYear;
 import io.github.caliburno.academy_accounting.model.Course;
 import io.github.caliburno.academy_accounting.model.enums.CourseLevel;
-import io.github.caliburno.academy_accounting.repository.AcademicYearRepository;
 import io.github.caliburno.academy_accounting.repository.CourseRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class CourseService {
         return courseRepository.findById(id);
     }
 
-    public List<Course> findActiveYearCourse(AcademicYear year) {
+    public List<Course> findActiveYearCourse() {
         return courseRepository.findByAcademicYear_ActiveTrue();
     }
 
