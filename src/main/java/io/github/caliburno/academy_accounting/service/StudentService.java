@@ -38,9 +38,9 @@ public class StudentService {
     }
 
     public void deleteById(Long id) {
-        Student student = findById(id).orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+        Student student = findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
         if (student.getEnrollmentList() != null && !student.getEnrollmentList().isEmpty()) {
-            throw new RuntimeException("No se puede eliminar un alumno con inscripciones activas");
+            throw new RuntimeException("You can't delete a student with active enrollments");
         }
         studentRepository.deleteById(id);
     }

@@ -34,6 +34,6 @@ public class PaymentDTO {
 
     private PaymentStatus status;
     private LocalDate paymentDate;
-    private Boolean idOverdue;
+    private Boolean isOverdue;
 
 }

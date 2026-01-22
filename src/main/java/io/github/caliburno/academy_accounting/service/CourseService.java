@@ -49,9 +49,9 @@ public class CourseService {
     }
 
     public void deleteById(Long id) {
-        Course course = findById(id).orElseThrow(() -> new RuntimeException("Curso no encontrado"));
+        Course course = findById(id).orElseThrow(() -> new RuntimeException("Course not found"));
         if (course.getEnrollment() != null && !course.getEnrollment().isEmpty()) {
-            throw new RuntimeException("No se puede eliminar un curso con estudiantes inscriptos");
+            throw new RuntimeException("You can't delete a course with enrolled students");
         }
 
         courseRepository.deleteById(id);
