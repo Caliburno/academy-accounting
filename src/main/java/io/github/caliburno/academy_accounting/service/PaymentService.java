@@ -21,6 +21,7 @@ public class PaymentService {
     @Autowired
     private MonthlyPaymentRepository monthlyPaymentRepository;
 
+    @Autowired
     private StudentRepository studentRepository;
 
     public List<MonthlyPayment> findAll() {
@@ -35,7 +36,7 @@ public class PaymentService {
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
         return monthlyPaymentRepository.findByEnrollment_Student(student);
     }
-
+    
     public MonthlyPayment markAsPaid(Long paymentId) {
         MonthlyPayment payment = findById(paymentId)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
@@ -54,6 +55,10 @@ public class PaymentService {
 
     public List<MonthlyPayment> findOverduePayments() {
         return monthlyPaymentRepository.findByStatus(PaymentStatus.OVERDUE);
+    }
+
+    public List<MonthlyPayment> findPendingPayments() {
+        return monthlyPaymentRepository.findByStatus(PaymentStatus.PENDING);
     }
 
     public void markOverduePayments() {
