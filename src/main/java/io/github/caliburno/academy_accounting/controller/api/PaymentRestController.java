@@ -5,7 +5,6 @@ import io.github.caliburno.academy_accounting.model.Course;
 import io.github.caliburno.academy_accounting.model.Enrollment;
 import io.github.caliburno.academy_accounting.model.MonthlyPayment;
 import io.github.caliburno.academy_accounting.model.Student;
-import io.github.caliburno.academy_accounting.service.EnrollmentService;
 import io.github.caliburno.academy_accounting.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 public class PaymentRestController {
 
     private final PaymentService paymentService;
-    private final EnrollmentService enrollmentService;
 
     @GetMapping
     public ResponseEntity<List<PaymentDTO>> getAllPayments() {
@@ -33,24 +31,24 @@ public class PaymentRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PaymentDTO> getPaymentById(@PathVariable Long id) {
-        MonthlyPayment monthlyPayment = paymentService.findById(id).orElseThrow(() -> new RuntimeException("Payment not found"));
+        MonthlyPayment monthlyPayment = paymentService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payment not found with id: " + id));
         return ResponseEntity.ok(convertToDTO(monthlyPayment));
     }
 
     @GetMapping("/student/{studentId}")
     public ResponseEntity<List<PaymentDTO>> getPaymentsByStudent(@PathVariable Long id) {
         List<MonthlyPayment> payments = paymentService.findByStudentId(id);
-        List<PaymentDTO> dtos = payments
-                .stream()
+        List<PaymentDTO> dtos = payments.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/pending")
-    public ResponseEntity<List<PaymentDTO>> getPendingPayments() {
-        List<MonthlyPayment> payment = paymentService.findOutstandingPayments();
-        List<PaymentDTO> dtos = payment.stream()
+    @GetMapping("/outstanding")
+    public ResponseEntity<List<PaymentDTO>> getOutstandingPayments() {
+        List<MonthlyPayment> payments = paymentService.findOutstandingPayments();
+        List<PaymentDTO> dtos = payments.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
