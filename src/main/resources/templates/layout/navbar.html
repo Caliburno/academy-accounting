@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
-
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-mortarboard-fill"></i> Academy Accounting
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/"><i class="bi bi-house-door"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/students"><i class="bi bi-people"></i> Students</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/courses"><i class="bi bi-book"></i> Courses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/enrollments"><i class="bi bi-journal-check"></i> Enrollments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/payments"><i class="bi bi-cash-coin"></i> Payments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/exams"><i class="bi bi-file-earmark-text"></i> Exams</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/reports"><i class="bi bi-graph-up"></i> Reports</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 </body>
 </html>

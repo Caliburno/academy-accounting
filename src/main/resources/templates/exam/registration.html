@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Register for Exam - Academy Accounting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
 <body>
+<div th:replace="~{layout/navbar :: navbar}"></div>
 
+<div class="container mt-4">
+    <h1><i class="bi bi-person-plus"></i> Register Student for Exam</h1>
+
+    <div class="card mt-4 mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="bi bi-file-earmark-text"></i> Exam Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Exam:</strong> <span th:text="${exam.name}">Cambridge FCE</span></p>
+                    <p><strong>Level:</strong> <span class="badge bg-secondary" th:text="${exam.level}">INTERMEDIATE</span></p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Date:</strong> <span th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}">15/06/2025</span></p>
+                    <p><strong>Price:</strong> <span class="text-success fw-bold" th:text="'$' + ${exam.price}">$200</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <form th:action="@{/exams/{examId}/register(examId=${exam.id})}" method="post">
+                <div class="mb-3">
+                    <label for="studentId" class="form-label">Select Student *</label>
+                    <select class="form-select" id="studentId" name="studentId" required>
+                        <option value="">Choose a student...</option>
+                        <option th:each="student : ${students}"
+                                th:value="${student.id}"
+                                th:text="${student.name + ' (' + student.referentAdult + ')'}">
+                            John Doe (Jane Doe)
+                        </option>
+                    </select>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>Payment Information:</strong> The exam fee can be paid in installments.
+                    Payment tracking will be created automatically upon registration.
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Register Student</button>
+                    <a href="/exams" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back to Exams</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

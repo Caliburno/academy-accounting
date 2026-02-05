@@ -1,10 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Monthly Revenue Report - Academy Accounting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
 <body>
+<div th:replace="~{layout/navbar :: navbar}"></div>
 
+<div class="container mt-4">
+    <h1><i class="bi bi-graph-up"></i> Monthly Revenue Report</h1>
+
+    <div class="card mt-4 mb-4">
+        <div class="card-body">
+            <form method="get" action="/reports">
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label for="year" class="form-label">Year</label>
+                        <input type="number"
+                               class="form-control"
+                               id="year"
+                               name="year"
+                               th:value="${selectedYear}"
+                               placeholder="2025"
+                               min="2020"
+                               max="2100">
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label for="month" class="form-label">Month</label>
+                        <select class="form-select" id="month" name="month">
+                            <option value="">All Months</option>
+                            <option value="1" th:selected="${selectedMonth == 1}">January</option>
+                            <option value="2" th:selected="${selectedMonth == 2}">February</option>
+                            <option value="3" th:selected="${selectedMonth == 3}">March</option>
+                            <option value="4" th:selected="${selectedMonth == 4}">April</option>
+                            <option value="5" th:selected="${selectedMonth == 5}">May</option>
+                            <option value="6" th:selected="${selectedMonth == 6}">June</option>
+                            <option value="7" th:selected="${selectedMonth == 7}">July</option>
+                            <option value="8" th:selected="${selectedMonth == 8}">August</option>
+                            <option value="9" th:selected="${selectedMonth == 9}">September</option>
+                            <option value="10" th:selected="${selectedMonth == 10}">October</option>
+                            <option value="11" th:selected="${selectedMonth == 11}">November</option>
+                            <option value="12" th:selected="${selectedMonth == 12}">December</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Generate
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-success">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">
+                <i class="bi bi-cash-stack"></i>
+                Revenue for
+                <span th:if="${selectedMonth != null}" th:text="${selectedMonth}">3</span>
+                <span th:if="${selectedMonth != null}">/</span>
+                <span th:if="${selectedYear != null}" th:text="${selectedYear}">2025</span>
+                <span th:if="${selectedYear == null && selectedMonth == null}">All Time</span>
+            </h4>
+        </div>
+        <div class="card-body text-center">
+            <h1 class="display-3 fw-bold text-success" th:text="'$' + ${revenue}">$0.00</h1>
+            <p class="text-muted mt-3">Total revenue from paid monthly course fees</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i>
+                <strong>Report Information:</strong>
+                <ul class="mb-0 mt-2">
+                    <li>This report shows revenue from <strong>PAID</strong> monthly course payments only</li>
+                    <li>Leave year and month blank to see total revenue across all time</li>
+                    <li>Select specific year/month to filter the revenue calculation</li>
+                    <li>Exam fees and pending payments are not included in this report</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <h3><i class="bi bi-calendar3"></i> Quick Reports</h3>
+            <div class="d-grid gap-2 d-md-flex mt-3">
+                <a th:href="@{/reports(year=${#temporals.year(#temporals.createNow())}, month=${#temporals.month(#temporals.createNow())})}"
+                   class="btn btn-outline-primary">
+                    <i class="bi bi-calendar-check"></i> Current Month
+                </a>
+                <a th:href="@{/reports(year=${#temporals.year(#temporals.createNow())})}"
+                   class="btn btn-outline-success">
+                    <i class="bi bi-calendar-range"></i> Current Year
+                </a>
+                <a href="/payments/outstanding" class="btn btn-outline-warning">
+                    <i class="bi bi-calendar-x"></i> View Outstanding
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
