@@ -34,7 +34,7 @@ public class MonthlyPayment {
     @Column(nullable = false)
     private PaymentStatus status;
 
-    @Column(name ="payment_date", nullable = false)
+    @Column(name ="payment_date")
     private LocalDate paymentDate;
 
     @Column(nullable = false)

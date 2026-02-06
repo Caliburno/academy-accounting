@@ -27,7 +27,7 @@ public class ExamPayment {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDate paymentDate;
 
     @Column
     private String notes;

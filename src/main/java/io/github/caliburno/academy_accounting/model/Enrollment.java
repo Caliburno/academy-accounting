@@ -41,5 +41,4 @@ public class Enrollment {
     @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL)
     private List<MonthlyPayment> monthlyPayments;
 
-
 }

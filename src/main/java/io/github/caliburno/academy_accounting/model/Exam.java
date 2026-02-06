@@ -28,10 +28,10 @@ public class Exam {
     @Column(nullable = false)
     private CourseLevel level;
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "exam_date", nullable = false)
     private LocalDate examDate;
 
     @ManyToOne

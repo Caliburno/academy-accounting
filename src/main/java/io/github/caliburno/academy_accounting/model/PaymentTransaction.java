@@ -21,7 +21,8 @@ public class PaymentTransaction {
     @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
 }

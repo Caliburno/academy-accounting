@@ -22,11 +22,11 @@ public class ExamRegistration {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "exam_id", nullable = false)
     private Exam exam;
 
     @Column(name = "registration_date", nullable = false)
@@ -42,6 +42,6 @@ public class ExamRegistration {
     @Column(nullable = false)
     private PaymentStatus paymentStatus;
 
-    @OneToMany(mappedBy = "exam_registration", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "examRegistration", cascade = CascadeType.ALL)
     private List<ExamPayment> examPayment;
 }
