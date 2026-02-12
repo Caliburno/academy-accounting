@@ -24,10 +24,10 @@ public class MonthlyPayment {
     @JoinColumn(name = "enrollment_id", nullable = false)
     private Enrollment enrollment;
 
-    @Column(nullable = false)
+    @Column(name = "payment_year", nullable = false)
     private Integer year;
 
-    @Column(nullable = false)
+    @Column(name = "payment_month", nullable = false)
     private Integer month;
 
     @Enumerated(EnumType.STRING)

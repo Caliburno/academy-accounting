@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${exam.id != null ? 'Edit Exam' : 'New Exam'}">Exam Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+    <h1><i class="bi bi-plus-circle"></i> <span th:text="${exam.id != null ? 'Edit Exam' : 'New Exam'}">Exam Form</span></h1>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <form th:action="${exam.id != null ? '/exams/' + exam.id : '/exams'}" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="name" class="form-label">Exam Name *</label>
+                        <input type="text" class="form-control" id="name" name="name" th:value="${exam.name}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="level" class="form-label">Level *</label>
+                        <select class="form-select" id="level" name="level" required>
+                            <option value="">Select Level</option>
+                            <option th:each="levelOption : ${T(io.github.caliburno.academy_accounting.model.enums.CourseLevel).values()}"
+                                    th:value="${levelOption}"
+                                    th:text="${#strings.replace(levelOption.name(), '_', ' ')}"
+                                    th:selected="${exam.level != null && exam.level == levelOption}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="totalPrice" class="form-label">Price *</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="totalPrice" name="totalPrice" th:value="${exam.totalPrice}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="examDate" class="form-label">Exam Date *</label>
+                        <input type="date" class="form-control" id="examDate" name="examDate" th:value="${exam.examDate}" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="academicYearId" class="form-label">Academic Year</label>
+                        <select class="form-select" id="academicYearId" name="academicYearId">
+                            <option value="">Use Active Academic Year</option>
+                            <option th:each="year : ${academicYears}"
+                                    th:value="${year.id}"
+                                    th:text="${year.year}"
+                                    th:selected="${exam.academicYear != null && exam.academicYear.id == year.id}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save</button>
+                    <a href="/exams" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -88,11 +88,7 @@ public class EnrollmentService {
 
     private List<MonthlyPayment> generateMontlyPayments(Enrollment enrollment) {
         List<MonthlyPayment> payments = new ArrayList<>();
-        int numberOfMonths = END_MONTH - START_MONTH + 1;
-
-        BigDecimal monthlyAmount = enrollment
-                .getFinalPrice().divide(new BigDecimal(numberOfMonths), 2, RoundingMode.HALF_UP);
-
+        BigDecimal monthlyAmount = enrollment.getFinalPrice();
         int year = enrollment.getAcademicYear().getYear();
 
         for (int month = START_MONTH; month <= END_MONTH; month++) {

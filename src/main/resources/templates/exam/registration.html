@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-md-6">
                     <p><strong>Date:</strong> <span th:text="${#temporals.format(exam.examDate, 'dd/MM/yyyy')}">15/06/2025</span></p>
-                    <p><strong>Price:</strong> <span class="text-success fw-bold" th:text="'$' + ${exam.price}">$200</span></p>
+                    <p><strong>Price:</strong> <span class="text-success fw-bold" th:text="'$' + ${exam.totalPrice}">$200</span></p>
                 </div>
             </div>
         </div>

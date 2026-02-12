@@ -1,6 +1,8 @@
 package io.github.caliburno.academy_accounting.controller.web;
 
+import io.github.caliburno.academy_accounting.model.AcademicYear;
 import io.github.caliburno.academy_accounting.model.Course;
+import io.github.caliburno.academy_accounting.model.enums.CourseLevel;
 import io.github.caliburno.academy_accounting.service.AcademicYearService;
 import io.github.caliburno.academy_accounting.service.CourseService;
 import jakarta.validation.Valid;
@@ -11,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -37,14 +40,22 @@ public class CourseController {
 
     @PostMapping
     public String createCourse(
-            @Valid @ModelAttribute("course") Course course,
-            BindingResult result,
+            @RequestParam String name,
+            @RequestParam CourseLevel level,
+            @RequestParam BigDecimal basePrice,
+            @RequestParam(required = false) Long academicYearId,
             RedirectAttributes redirectAttributes,
             Model model) {
 
-        if (result.hasErrors()) {
-            model.addAttribute("academicYears", academicYearService.findAll());
-            return "course/form";
+        Course course = new Course();
+        course.setName(name);
+        course.setLevel(level);
+        course.setBasePrice(basePrice);
+
+        if (academicYearId != null) {
+            AcademicYear academicYear = academicYearService.findById(academicYearId)
+                    .orElseThrow(() -> new RuntimeException("Academic Year not found"));
+            course.setAcademicYear(academicYear);
         }
 
         courseService.save(course);
@@ -63,17 +74,26 @@ public class CourseController {
     @PostMapping("/{id}")
     public String updateCourse(
             @PathVariable Long id,
-            @Valid @ModelAttribute("course") Course course,
-            BindingResult result,
+            @RequestParam String name,
+            @RequestParam CourseLevel level,
+            @RequestParam BigDecimal basePrice,
+            @RequestParam(required = false) Long academicYearId,
             RedirectAttributes redirectAttributes,
             Model model) {
 
-        if (result.hasErrors()) {
-            model.addAttribute("academicYears", academicYearService.findAll());
-            return "course/form";
+        Course course = courseService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        course.setName(name);
+        course.setLevel(level);
+        course.setBasePrice(basePrice);
+
+        if (academicYearId != null) {
+            AcademicYear academicYear = academicYearService.findById(academicYearId)
+                    .orElseThrow(() -> new RuntimeException("Academic Year not found"));
+            course.setAcademicYear(academicYear);
         }
 
-        course.setId(id);
         courseService.save(course);
         redirectAttributes.addFlashAttribute("success", "Course updated successfully!");
         return "redirect:/courses";

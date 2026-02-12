@@ -1,6 +1,5 @@
 package io.github.caliburno.academy_accounting.controller.web;
 
-import io.github.caliburno.academy_accounting.dto.MonthlyReportDTO;
 import io.github.caliburno.academy_accounting.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/reports")
@@ -25,11 +24,15 @@ public class ReportController {
             @RequestParam(required = false) Integer month,
             Model model) {
 
-        BigDecimal revenue = reportService.getTotalRevenueForMonth(year, month);
+        LocalDate today = LocalDate.now();
+        int selectedYear = (year != null) ? year : today.getYear();
+        int selectedMonth = (month != null) ? month : today.getMonthValue();
+
+        BigDecimal revenue = reportService.getTotalRevenueForMonth(selectedYear, selectedMonth);
 
         model.addAttribute("revenue", revenue);
-        model.addAttribute("selectedYear", year);
-        model.addAttribute("selectedMonth", month);
+        model.addAttribute("selectedYear", selectedYear);
+        model.addAttribute("selectedMonth", selectedMonth);
         return "report/monthly-report";
     }
 }

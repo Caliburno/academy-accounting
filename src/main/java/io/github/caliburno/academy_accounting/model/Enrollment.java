@@ -38,7 +38,7 @@ public class Enrollment {
     @Column(name = "enrollment_date", nullable = false)
     private LocalDate enrollmentDate;
 
-    @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MonthlyPayment> monthlyPayments;
 
 }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${academicYear.id != null ? 'Edit Academic Year' : 'New Academic Year'}">Academic Year Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+    <h1><i class="bi bi-calendar-plus"></i> <span th:text="${academicYear.id != null ? 'Edit Academic Year' : 'New Academic Year'}">Academic Year Form</span></h1>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <form th:action="${academicYear.id != null ? '/academic-years/' + academicYear.id : '/academic-years'}"
+                  th:object="${academicYear}"
+                  method="post">
+                <div class="mb-3">
+                    <label for="year" class="form-label">Year *</label>
+                    <input type="number"
+                           class="form-control"
+                           id="year"
+                           th:field="*{year}"
+                           min="2020"
+                           max="2100"
+                           required>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></div>
+                    <small class="text-muted">Enter the calendar year (e.g., 2025, 2026)</small>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox"
+                           class="form-check-input"
+                           id="active"
+                           th:field="*{active}">
+                    <label class="form-check-label" for="active">
+                        Set as Active Year
+                    </label>
+                    <div class="form-text">
+                        <i class="bi bi-info-circle"></i> Only one academic year can be active at a time. Setting this as active will deactivate the current active year.
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> Save
+                    </button>
+                    <a href="/academic-years" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

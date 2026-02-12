@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.List;
@@ -59,6 +60,29 @@ public class PaymentService {
 
     public List<MonthlyPayment> findPendingPayments() {
         return monthlyPaymentRepository.findByStatus(PaymentStatus.PENDING);
+    }
+
+    public List<MonthlyPayment> findCurrentPayments() {
+        LocalDate today = LocalDate.now();
+        int currentYear = today.getYear();
+        int currentMonth = today.getMonthValue();
+
+        List<MonthlyPayment> allPayments = monthlyPaymentRepository.findAll();
+
+        return allPayments.stream().filter(payment -> {
+            if (payment.getYear().equals(currentYear) && payment.getMonth().equals(currentMonth)) {
+                return true;
+            }
+            if (payment.getStatus() == PaymentStatus.PENDING || payment.getStatus() == PaymentStatus.OVERDUE) {
+                if (payment.getYear() < currentYear) {
+                    return true;
+                }
+                if (payment.getYear().equals(currentYear) && payment.getMonth() < currentMonth) {
+                    return true;
+                }
+            }
+            return false;
+        }).toList();
     }
 
     public void markOverduePayments() {

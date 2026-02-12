@@ -16,7 +16,7 @@ public class AcademicYear {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "effective_year", nullable = false)
     private Integer year;
 
     @Column(nullable = false)

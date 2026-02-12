@@ -25,17 +25,33 @@
                         <label for="level" class="form-label">Level *</label>
                         <select class="form-select" id="level" th:field="*{level}" required>
                             <option value="">Select Level</option>
-                            <option value="BEGINNER">Beginner</option>
-                            <option value="INTERMEDIATE">Intermediate</option>
-                            <option value="ADVANCED">Advanced</option>
-                            <option value="PROFICIENCY">Proficiency</option>
+                            <option value="YEAR_OLDS_3">3 YEAR OLDS</option>
+                            <option value="YEAR_OLDS_4">4 YEAR OLDS</option>
+                            <option value="YEAR_OLDS_5">5 YEAR OLDS</option>
+                            <option value="TRANSITION_1">TRANSITION 1</option>
+                            <option value="TRANSITION_2">TRANSITION 2</option>
+                            <option value="CHILDREN_1">CHILDREN 1</option>
+                            <option value="CHILDREN_2">CHILDREN 2</option>
+                            <option value="CHILDREN_3">CHILDREN 3</option>
+                            <option value="JUNIOR_1">JUNIOR 1</option>
+                            <option value="JUNIOR_2">JUNIOR 2</option>
+                            <option value="JUNIOR_3">JUNIOR 3</option>
+                            <option value="JUNIOR_4">JUNIOR 4</option>
+                            <option value="JUNIOR_5">JUNIOR 5</option>
+                            <option value="PRE_BASIC">PRE BASIC</option>PRE_BASIC
+                            <option value="BASIC_CERTIFICATE_LEVEL">BASIC CERTIFICATE LEVEL</option>BASIC_CERTIFICATE_LEVEL
+                            <option value="ADULTS_1">ADULTS 1</option>
+                            <option value="ADULTS_2">ADULTS 2</option>
+                            <option value="ADULTS_3">ADULTS 3</option>
+                            <option value="ADULTS_4">ADULTS 4</option>
+                            <option value="OXFORD_HOUSE_COLLEGE_PRELIMINARY">OXFORD HOUSE COLLEGE PRELIMINARY</option>
                         </select>
                         <div class="text-danger small" th:if="${#fields.hasErrors('level')}" th:errors="*{level}"></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="basePrice" class="form-label">Base Price *</label>
+                        <label for="basePrice" class="form-label">Monthly Price *</label>
                         <div class="input-group">
                             <span class="input-group-text">$</span>
                             <input type="number" step="0.01" class="form-control" id="basePrice" th:field="*{basePrice}" required>
@@ -43,9 +59,14 @@
                         <div class="text-danger small" th:if="${#fields.hasErrors('basePrice')}" th:errors="*{basePrice}"></div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="academicYear" class="form-label">Academic Year</label>
-                        <select class="form-select" id="academicYear" th:field="*{academicYear}">
-                            <option th:each="year : ${academicYears}" th:value="${year}" th:text="${year.year}" th:selected="${course.academicYear != null && course.academicYear.id == year.id}"></option>
+                        <label for="academicYearId" class="form-label">Academic Year</label>
+                        <select class="form-select" id="academicYearId" name="academicYearId">
+                            <option value="">Use Active Academic Year</option>
+                            <option th:each="year : ${academicYears}"
+                                    th:value="${year.id}"
+                                    th:text="${year.year}"
+                                    th:selected="${course.academicYear != null && course.academicYear.id == year.id}">
+                            </option>
                         </select>
                         <small class="text-muted">Leave blank to use active academic year</small>
                     </div>

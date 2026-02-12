@@ -1,6 +1,8 @@
 package io.github.caliburno.academy_accounting.controller.web;
 import io.github.caliburno.academy_accounting.dto.*;
 import io.github.caliburno.academy_accounting.model.*;
+import io.github.caliburno.academy_accounting.model.enums.PaymentStatus;
+import io.github.caliburno.academy_accounting.repository.MonthlyPaymentRepository;
 import io.github.caliburno.academy_accounting.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,10 +19,11 @@ public class PaymentController {
 
     private final PaymentService paymentService;
     private final ReportService reportService;
+    private final MonthlyPaymentRepository monthlyPaymentRepository;
 
     @GetMapping
     public String listMonthlyPayments(Model model) {
-        List<MonthlyPayment> payments = paymentService.findAll();
+        List<MonthlyPayment> payments = paymentService.findCurrentPayments();
         model.addAttribute("payments", payments);
         return "payment/monthly";
     }
@@ -45,6 +48,15 @@ public class PaymentController {
     @GetMapping("/overdue")
     public String listOverduePayments(Model model) {
         List<MonthlyPayment> payments = paymentService.findOverduePayments();
+        model.addAttribute("payments", payments);
+        return "payment/monthly";
+    }
+
+    @GetMapping("/paid")
+    public String listPaidPayments(Model model) {
+        List<MonthlyPayment> payments = paymentService.findAll().stream()
+                .filter(p -> p.getStatus() == PaymentStatus.PAID)
+                .toList();
         model.addAttribute("payments", payments);
         return "payment/monthly";
     }

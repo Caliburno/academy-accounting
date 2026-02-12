@@ -34,7 +34,7 @@ public class Course {
     @JoinColumn(name = "academic_year_id", nullable = false)
     private AcademicYear academicYear;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollment;
 
 }

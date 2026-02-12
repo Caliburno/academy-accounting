@@ -44,7 +44,7 @@
                     <td th:text="${course.academicYear != null ? course.academicYear.year : '-'}">2024</td>
                     <td>
                         <a th:href="@{/courses/{id}/edit(id=${course.id})}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                        <a th:href="@{/courses/{id}/delete(id=${course.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')"><i class="bi bi-trash"></i></a>
+                        <a th:href="@{/courses/{id}/delete(id=${course.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this course? All enrollments and payments will be deleted.')"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(courses)}">

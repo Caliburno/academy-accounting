@@ -39,8 +39,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="referentAdult" class="form-label">Referent Adult *</label>
-                        <input type="text" class="form-control" id="referentAdult" th:field="*{referentAdult}" required>
+                        <label for="referentAdult" class="form-label">Referent Adult</label>
+                        <input type="text" class="form-control" id="referentAdult" th:field="*{referentAdult}">
                         <div class="text-danger small" th:if="${#fields.hasErrors('referentAdult')}" th:errors="*{referentAdult}"></div>
                     </div>
                     <div class="col-md-6 mb-3">

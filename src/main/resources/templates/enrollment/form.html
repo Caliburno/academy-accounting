@@ -22,7 +22,7 @@
                             <option value="">Select Student</option>
                             <option th:each="student : ${students}"
                                     th:value="${student.id}"
-                                    th:text="${student.name + ' (' + student.referentAdult + ')'}">
+                                    th:text="${student.name}">
                                 John Doe (Jane Doe)
                             </option>
                         </select>

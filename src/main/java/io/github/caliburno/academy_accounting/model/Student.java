@@ -36,6 +36,6 @@ public class Student {
     @JoinColumn(name = "family_group_id")
     private FamilyGroup familyGroup;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollmentList;
 }

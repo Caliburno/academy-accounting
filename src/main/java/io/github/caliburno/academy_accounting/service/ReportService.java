@@ -18,13 +18,16 @@ public class ReportService {
     private MonthlyPaymentRepository monthlyPaymentRepository;
 
     public BigDecimal getTotalRevenueForMonth(Integer year, Integer month) {
-        List<MonthlyPayment> paymentList = monthlyPaymentRepository.findByYearAndMonth(year, month);
+        List<MonthlyPayment> paymentList = monthlyPaymentRepository.findByStatus(PaymentStatus.PAID);
 
         return paymentList
                 .stream()
-                .filter(p -> p.getStatus() == PaymentStatus.PAID)
-                .map(MonthlyPayment::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .filter(p -> {
+                    if (p.getPaymentDate() == null) return false;
+                    return  p.getPaymentDate().getYear() == year && p.getPaymentDate().getMonthValue() == month;
+                })
+                    .map(MonthlyPayment::getAmount)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public BigDecimal getTotalOutstanding() {
