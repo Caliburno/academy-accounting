@@ -279,3 +279,24 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 ⭐ If this project helped you, please consider giving it a star!
+
+---
+
+Screenshots:
+
+![Students](https://github.com/user-attachments/assets/ad6537c2-96bf-441c-adfa-713277dd99e7)
+
+![Pending Payments](https://github.com/user-attachments/assets/b0b7c302-c7a3-43d1-9289-b69222c569bb)
+
+![New Exam](https://github.com/user-attachments/assets/21d28d96-f527-4be0-8e33-8dde14bd4bf0)
+
+![New Enrollment](https://github.com/user-attachments/assets/a1c7cdf9-9586-4e16-97cb-fa74baaedc02)
+
+![Monthly Report](https://github.com/user-attachments/assets/cb5df1ad-7d46-451f-96bf-775ed8267bcb)
+
+![Home](https://github.com/user-attachments/assets/c98371f8-4463-48b3-93f6-9f75edf0d74b)
+
+![Courses](https://github.com/user-attachments/assets/238ee348-5d2d-41fb-bc6e-967238fa46ce)
+
+![Academic Year](https://github.com/user-attachments/assets/b7448b08-8cbd-4645-b2e7-a8b060b70be8)
+
