@@ -101,7 +101,7 @@ This approach provides:
 
 **Controller Pattern**: Separate controller packages for API and web endpoints
 - `controller.web.*` - Thymeleaf-based controllers returning views
-- `controller.api.*` - RESTful controllers returning JSON (future implementation)
+- `controller.api.*` - RESTful controllers returning JSON
 
 **Service Layer**: Business logic isolated from presentation concerns
 
